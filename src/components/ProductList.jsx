@@ -7,8 +7,6 @@
 //   FiChevronLeft,
 //   FiChevronRight,
 //   FiEye,
-//   FiPlus,
-//   FiMinus,
 // } from "react-icons/fi";
 // import { toast } from "react-hot-toast";
 // import { Link } from "react-router-dom";
@@ -18,18 +16,9 @@
 //   const [selectedCategory, setSelectedCategory] = useState("All");
 //   const [currentPage, setCurrentPage] = useState(1);
 //   const [productsPerPage] = useState(8);
-//   const [quantities, setQuantities] = useState({});
 //   const addToCart = useCartStore((state) => state.addToCart);
 
 //   const categories = ["All", ...new Set(products.map((p) => p.category?.name))];
-
-//   const handleQuantityChange = (productId, value) => {
-//     const newValue = Math.max(1, Math.min(99, value));
-//     setQuantities((prev) => ({
-//       ...prev,
-//       [productId]: newValue,
-//     }));
-//   };
 
 //   const filteredProducts = products.filter((product) => {
 //     const matchesSearch = product.title
@@ -49,9 +38,8 @@
 //   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
 //   const handleAddToCart = (product) => {
-//     const quantity = quantities[product.id] || 1;
-//     addToCart({ ...product, quantity });
-//     toast.success(`${quantity} ${product.title} added to cart!`, {
+//     addToCart({ ...product, quantity: 1 });
+//     toast.success(`${product.title} added to cart!`, {
 //       position: "bottom-right",
 //       style: {
 //         background: "#1F2937",
@@ -125,88 +113,59 @@
 //       ) : (
 //         <>
 //           <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
-//             {currentProducts.map((product) => {
-//               const quantity = quantities[product.id] || 1;
-//               return (
-//                 <motion.div
-//                   key={product.id}
-//                   initial={{ opacity: 0, y: 20 }}
-//                   animate={{ opacity: 1, y: 0 }}
-//                   transition={{ duration: 0.3 }}
-//                   whileHover={{
-//                     scale: 1.03,
-//                     boxShadow: "0 0 20px rgba(168, 85, 247, 0.3)",
-//                   }}
-//                   className="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500 transition-all duration-300 group w-full"
-//                 >
-//                   <Link to={`/products/${product.id}`} className="block">
-//                     <div className="h-48 overflow-hidden relative">
-//                       {product.images?.[0] && (
-//                         <img
-//                           src={product.images[0]}
-//                           alt={product.title}
-//                           className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-//                         />
-//                       )}
-//                       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-//                         <FiEye className="text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" />
-//                       </div>
-//                     </div>
-//                   </Link>
-//                   <div className="p-4">
-//                     <Link to={`/products/${product.id}`} className="block">
-//                       <h4 className="text-lg font-semibold text-white mb-2 truncate hover:text-purple-400 transition-colors">
-//                         {product.title}
-//                       </h4>
-//                     </Link>
-//                     <p className="text-purple-400 font-bold text-xl mb-4">
-//                       ${product.price}
-//                     </p>
-
-//                     {/* Quantity Controls */}
-//                     <div className="flex items-center justify-between mb-4">
-//                       <div className="flex items-center border border-gray-600 rounded-lg overflow-hidden">
-//                         <button
-//                           onClick={() =>
-//                             handleQuantityChange(product.id, quantity - 1)
-//                           }
-//                           className="px-3 py-1 bg-gray-700 text-white hover:bg-gray-600 transition-colors"
-//                         >
-//                           <FiMinus className="text-sm" />
-//                         </button>
-//                         <span className="px-3 py-1 bg-gray-800 text-white text-center w-10">
-//                           {quantity}
-//                         </span>
-//                         <button
-//                           onClick={() =>
-//                             handleQuantityChange(product.id, quantity + 1)
-//                           }
-//                           className="px-3 py-1 bg-gray-700 text-white hover:bg-gray-600 transition-colors"
-//                         >
-//                           <FiPlus className="text-sm" />
-//                         </button>
-//                       </div>
-//                     </div>
-
-//                     <div className="flex gap-2">
-//                       <motion.button
-//                         whileTap={{ scale: 0.95 }}
-//                         onClick={() => handleAddToCart(product)}
-//                         className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 px-4 rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base"
-//                       >
-//                         <FiShoppingCart className="text-sm" /> Add
-//                       </motion.button>
-//                       <Link
-//                         to={`/products/${product.id}`}
-//                         className="flex-1 flex items-center justify-center gap-2 bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors text-sm sm:text-base"
-//                       >
-//                         <FiEye className="text-sm" /> Details
-//                       </Link>
+//             {currentProducts.map((product) => (
+//               <motion.div
+//                 key={product.id}
+//                 initial={{ opacity: 0, y: 20 }}
+//                 animate={{ opacity: 1, y: 0 }}
+//                 transition={{ duration: 0.3 }}
+//                 whileHover={{
+//                   scale: 1.03,
+//                   boxShadow: "0 0 20px rgba(168, 85, 247, 0.3)",
+//                 }}
+//                 className="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500 transition-all duration-300 group w-full"
+//               >
+//                 <Link to={`/products/${product.id}`} className="block">
+//                   <div className="h-48 overflow-hidden relative">
+//                     {product.images?.[0] && (
+//                       <img
+//                         src={product.images[0]}
+//                         alt={product.title}
+//                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+//                       />
+//                     )}
+//                     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+//                       <FiEye className="text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" />
 //                     </div>
 //                   </div>
-//                 </motion.div>
-//               );
-//             })}
+//                 </Link>
+//                 <div className="p-4">
+//                   <Link to={`/products/${product.id}`} className="block">
+//                     <h4 className="text-lg font-semibold text-white mb-2 truncate hover:text-purple-400 transition-colors">
+//                       {product.title}
+//                     </h4>
+//                   </Link>
+//                   <p className="text-purple-400 font-bold text-xl mb-4">
+//                     ${product.price}
+//                   </p>
+//                   <div className="flex gap-2">
+//                     <motion.button
+//                       whileTap={{ scale: 0.95 }}
+//                       onClick={() => handleAddToCart(product)}
+//                       className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 px-4 rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base"
+//                     >
+//                       <FiShoppingCart className="text-sm" /> Add
+//                     </motion.button>
+//                     <Link
+//                       to={`/products/${product.id}`}
+//                       className="flex-1 flex items-center justify-center gap-2 bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors text-sm sm:text-base"
+//                     >
+//                       <FiEye className="text-sm" /> Details
+//                     </Link>
+//                   </div>
+//                 </div>
+//               </motion.div>
+//             ))}
 //           </div>
 
 //           {/* Pagination */}
@@ -302,13 +261,15 @@
 
 import React, { useState } from "react";
 import { useCartStore } from "../store/useStore";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FiShoppingCart,
   FiSearch,
   FiChevronLeft,
   FiChevronRight,
   FiEye,
+  FiHeart,
+  FiStar,
 } from "react-icons/fi";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -318,6 +279,7 @@ const ProductList = ({ products }) => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(8);
+  const [hoveredProduct, setHoveredProduct] = useState(null);
   const addToCart = useCartStore((state) => state.addToCart);
 
   const categories = ["All", ...new Set(products.map((p) => p.category?.name))];
@@ -374,7 +336,12 @@ const ProductList = ({ products }) => {
   return (
     <div className="w-full overflow-x-hidden px-4 sm:px-6">
       {/* Search & Filter UI */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8 w-full max-w-full">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col md:flex-row gap-4 mb-8 w-full max-w-full"
+      >
         <div className="relative flex-grow w-full">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <FiSearch className="text-purple-400" />
@@ -405,74 +372,136 @@ const ProductList = ({ products }) => {
             </option>
           ))}
         </select>
-      </div>
+      </motion.div>
 
       {/* Products Grid */}
       {filteredProducts.length === 0 ? (
-        <div className="text-center py-12 text-gray-400 w-full">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center py-12 text-gray-400 w-full"
+        >
           <p className="text-xl">No products found matching your criteria</p>
-        </div>
+        </motion.div>
       ) : (
         <>
           <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
-            {currentProducts.map((product) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                whileHover={{
-                  scale: 1.03,
-                  boxShadow: "0 0 20px rgba(168, 85, 247, 0.3)",
-                }}
-                className="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500 transition-all duration-300 group w-full"
-              >
-                <Link to={`/products/${product.id}`} className="block">
-                  <div className="h-48 overflow-hidden relative">
-                    {product.images?.[0] && (
-                      <img
-                        src={product.images[0]}
-                        alt={product.title}
-                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                      <FiEye className="text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" />
+            <AnimatePresence>
+              {currentProducts.map((product) => (
+                <motion.div
+                  key={product.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                  whileHover={{
+                    scale: 1.03,
+                    boxShadow: "0 10px 25px -5px rgba(168, 85, 247, 0.4)",
+                  }}
+                  className="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500 transition-all duration-300 group w-full relative"
+                  onMouseEnter={() => setHoveredProduct(product.id)}
+                  onMouseLeave={() => setHoveredProduct(null)}
+                >
+                  {/* Product Badge */}
+                  {product.price < 50 && (
+                    <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded z-10">
+                      SALE
+                    </div>
+                  )}
+
+                  <Link to={`/products/${product.id}`} className="block">
+                    <div className="h-48 overflow-hidden relative">
+                      {product.images?.[0] && (
+                        <motion.img
+                          src={product.images[0]}
+                          alt={product.title}
+                          className="w-full h-full object-cover"
+                          initial={{ scale: 1 }}
+                          animate={{
+                            scale: hoveredProduct === product.id ? 1.1 : 1,
+                          }}
+                          transition={{ duration: 0.5 }}
+                        />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                        <div className="flex items-center space-x-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <FiStar
+                              key={star}
+                              className={`text-sm ${
+                                star <= Math.floor(Math.random() * 3) + 3
+                                  ? "text-yellow-400 fill-yellow-400"
+                                  : "text-gray-400"
+                              }`}
+                            />
+                          ))}
+                          <span className="text-white text-xs ml-1">
+                            ({Math.floor(Math.random() * 100) + 20})
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <div className="p-4">
+                    <Link to={`/products/${product.id}`} className="block">
+                      <h4 className="text-lg font-semibold text-white mb-2 truncate hover:text-purple-400 transition-colors">
+                        {product.title}
+                      </h4>
+                    </Link>
+
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-purple-400 font-bold text-xl">
+                        ${product.price}
+                      </p>
+                      {product.price > 100 && (
+                        <p className="text-gray-400 text-sm line-through">
+                          ${(product.price * 1.2).toFixed(2)}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="flex gap-2">
+                      <motion.button
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleAddToCart(product)}
+                        className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 px-4 rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base"
+                      >
+                        <FiShoppingCart className="text-sm" /> Add
+                      </motion.button>
+
+                      <div className="flex gap-2">
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
+                        >
+                          <FiHeart className="text-gray-300 hover:text-red-400 transition-colors" />
+                        </motion.button>
+
+                        <Link
+                          to={`/products/${product.id}`}
+                          className="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center"
+                        >
+                          <FiEye className="text-gray-300 hover:text-purple-400 transition-colors" />
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </Link>
-                <div className="p-4">
-                  <Link to={`/products/${product.id}`} className="block">
-                    <h4 className="text-lg font-semibold text-white mb-2 truncate hover:text-purple-400 transition-colors">
-                      {product.title}
-                    </h4>
-                  </Link>
-                  <p className="text-purple-400 font-bold text-xl mb-4">
-                    ${product.price}
-                  </p>
-                  <div className="flex gap-2">
-                    <motion.button
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => handleAddToCart(product)}
-                      className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 px-4 rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base"
-                    >
-                      <FiShoppingCart className="text-sm" /> Add
-                    </motion.button>
-                    <Link
-                      to={`/products/${product.id}`}
-                      className="flex-1 flex items-center justify-center gap-2 bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors text-sm sm:text-base"
-                    >
-                      <FiEye className="text-sm" /> Details
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
 
           {/* Pagination */}
           {filteredProducts.length > productsPerPage && (
-            <div className="flex flex-col sm:flex-row justify-between items-center mt-8 w-full gap-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex flex-col sm:flex-row justify-between items-center mt-8 w-full gap-4"
+            >
               <div className="text-gray-400 text-sm sm:text-base">
                 Showing {indexOfFirstProduct + 1}-
                 {Math.min(indexOfLastProduct, filteredProducts.length)} of{" "}
@@ -480,9 +509,10 @@ const ProductList = ({ products }) => {
               </div>
 
               <nav className="flex items-center gap-1 sm:gap-2">
-                <button
+                <motion.button
                   onClick={handlePrevPage}
                   disabled={currentPage === 1}
+                  whileTap={{ scale: 0.9 }}
                   className={`p-1 sm:p-2 rounded-md ${
                     currentPage === 1
                       ? "text-gray-500 cursor-not-allowed"
@@ -490,7 +520,7 @@ const ProductList = ({ products }) => {
                   }`}
                 >
                   <FiChevronLeft className="text-lg sm:text-xl" />
-                </button>
+                </motion.button>
 
                 {Array.from(
                   { length: totalPages > 5 ? 5 : totalPages },
@@ -507,41 +537,52 @@ const ProductList = ({ products }) => {
                     }
 
                     return (
-                      <button
+                      <motion.button
                         key={pageNumber}
                         onClick={() => paginate(pageNumber)}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
                         className={`px-2 sm:px-3 py-1 rounded-md text-sm sm:text-base ${
                           currentPage === pageNumber
-                            ? "bg-purple-600 text-white"
+                            ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
                             : "text-purple-400 hover:bg-gray-700"
                         }`}
                       >
                         {pageNumber}
-                      </button>
+                      </motion.button>
                     );
                   }
                 )}
 
                 {totalPages > 5 && currentPage < totalPages - 2 && (
-                  <span className="text-purple-400 px-1">...</span>
+                  <motion.span
+                    className="text-purple-400 px-1"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    ...
+                  </motion.span>
                 )}
 
                 {totalPages > 5 && currentPage < totalPages - 2 && (
-                  <button
+                  <motion.button
                     onClick={() => paginate(totalPages)}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                     className={`px-2 sm:px-3 py-1 rounded-md text-sm sm:text-base ${
                       currentPage === totalPages
-                        ? "bg-purple-600 text-white"
+                        ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
                         : "text-purple-400 hover:bg-gray-700"
                     }`}
                   >
                     {totalPages}
-                  </button>
+                  </motion.button>
                 )}
 
-                <button
+                <motion.button
                   onClick={handleNextPage}
                   disabled={currentPage === totalPages}
+                  whileTap={{ scale: 0.9 }}
                   className={`p-1 sm:p-2 rounded-md ${
                     currentPage === totalPages
                       ? "text-gray-500 cursor-not-allowed"
@@ -549,9 +590,9 @@ const ProductList = ({ products }) => {
                   }`}
                 >
                   <FiChevronRight className="text-lg sm:text-xl" />
-                </button>
+                </motion.button>
               </nav>
-            </div>
+            </motion.div>
           )}
         </>
       )}
